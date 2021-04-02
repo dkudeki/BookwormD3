@@ -113,7 +113,7 @@ var BookwormClasses = {
         }
 
         var guessQuery = function () {
-            guess.method="return_json"
+            guess.method="json"
             guess.search_limits = {"word":["test"]}
             guess.aesthetic = {"x":"WordsPerMillion","y":"author"}
         }
@@ -160,7 +160,7 @@ var BookwormClasses = {
 	myquery["weights"] = undefined
 	
         var destination = (
-            "/cgi-bin/dbbindings.py?query=" +
+            "http://localhost:10012/cgi-bin/wsgi.py?query=" +
                 encodeURIComponent(JSON.stringify(myquery)))
 
 
@@ -3995,12 +3995,17 @@ var BookwormClasses = {
         var bookworm=this
         var variableOptions = bookworm.variableOptions;
         bookworm.variableOptions.options = []
-        var localQuery = {"method":"returnPossibleFields","database":database}
+        var localQuery = {
+            "method": "returnPossibleFields",
+            "database": database
+        }
+        console.log(localQuery)
         d3.json(bookworm.destinationize(localQuery),
                 function(error, json) {
                     if (error) {
                         console.warn(error)
                     }
+                    console.log(json)
                     json.push({"name":"","dbname":undefined})
                     json.map(function(row) {
                         row['database'] = bookworm.query['database']
@@ -4398,9 +4403,9 @@ var BookwormClasses = {
         //Constructs a cgi-bin request to local host.
         //Can be used with runSearch and searchWindow (below);
         //Or to get other things, like lists of variables.
-        query['method'] = query['method'] || "return_json"
+        query['method'] = query['method'] || "json"
 
-        return( "/cgi-bin/dbbindings.py/?query=" + encodeURIComponent(JSON.stringify(query)))
+        return( "http://localhost:10012/cgi-bin/wsgi.py/?query=" + encodeURIComponent(JSON.stringify(query)))
     },
 
     runSearch : function(d) {
@@ -4704,7 +4709,7 @@ var Bookworm = function(query) {
     newBookworm.dataTypes = {};
     newBookworm.plotTransformers = {};
     newBookworm.query = query || {};
-    newBookworm.query.method = newBookworm.query.method || "return_json"
+    newBookworm.query.method = newBookworm.query.method || "json"
     //bookworm.initializeInterfaceElements();
     return newBookworm
 }

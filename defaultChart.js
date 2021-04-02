@@ -24,7 +24,30 @@ if(window.location.hash) {
     dquery =  JSON.parse(decoded)
     dquery=dquery
 } else {
-    dquery = BookwormClasses.guessAtQuery()
+    dquery = {
+        "method": "json",
+        "words_collation": "Case_Sensitive",
+        "groups": ["date_year", "class"],
+        "database": "50K_test",
+        "counttype": ["WordsPerMillion"],
+        "search_limits": {
+            "date_year": {
+                "$lte": 2000,
+                "$gte": 1920
+            },
+            "lc_classes__id": {
+                "$lt": 10
+            },
+            "word": ["creativity"]
+        },
+        "aesthetic": {
+            "x": "date_year",
+            "y": "lc_classes",
+            "color": "WordsPerMillion"
+        },
+        "plotType": "heatmap",
+        "scaleType": "log"
+    };
 }
 
 //update the plot on return key.

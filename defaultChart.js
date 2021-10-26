@@ -28,7 +28,7 @@ if(window.location.hash) {
         "method": "json",
         "words_collation": "Case_Sensitive",
         "groups": ["date_year", "class"],
-        "database": "50K_test",
+        "database": "Bookworm2021",
         "counttype": ["WordsPerMillion"],
         "search_limits": {
             "date_year": {
